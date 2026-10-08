@@ -36,20 +36,22 @@ h1 > span { display: block; font-size: 28px; line-height: 1.35; letter-spacing: 
 .summary { max-width: 910px; margin: 25px auto 0; font-size: 18px; line-height: 1.6; }
 .summary strong { font-weight: 400; }
 .gallery { margin-top: 31px; }
+.motivation { margin-bottom: 25px; font-size: 18px; line-height: 1.6; }
+.motivation strong { color: var(--link); }
 .gallery-heading { display: flex; justify-content: space-between; align-items: center; gap: 14px; }
 .gallery-heading h2 { font-size: 26px; margin: 0; }
 .gallery-heading > button, .citation-actions button { border: 1px solid #c8c8c8; background: #fff; color: #404040; border-radius: 4px; padding: 7px 11px; font: 13px/1.4 var(--sans); min-height: 34px; }
 .gallery-heading > button:hover, .citation-actions button:hover { background: #f0f4fa; border-color: #7896bf; }
 .gallery-description { font-size: 17px; margin-top: 9px; }
 .interaction-hint { color: #ad2727; font-size: 15px; margin-top: 4px; }
-.demo-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 17px; }
+.demo-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 35px; width: min(100%, 900px); margin: 22px auto 0; }
 .demo-item { min-width: 0; }
 .demo-image { display: flex; align-items: center; padding: 0; width: 100%; aspect-ratio: 644 / 217; background: #000; border: 0; border-radius: 0; position: relative; overflow: hidden; }
 .demo-image img { width: 100%; max-height: 100%; object-fit: contain; }
 .play-indicator { display: none; position: absolute; inset: 0; margin: auto; width: 43px; height: 43px; border-radius: 50%; background: #000a; color: #fff; font: 19px/43px var(--sans); text-align: center; padding-left: 2px; }
 .demo-image[aria-pressed='true'] .play-indicator { display: block; }
 .demo-item figcaption { text-align: center; padding-top: 10px; }
-.demo-item h3 { font-size: 15px; }
+.demo-item h3 { font-size: 18px; }
 .demo-item figcaption a { display: inline-block; font-size: 14px; margin-top: 3px; }
 .section-intro { font-size: 19px; line-height: 1.55; margin-bottom: 24px; }
 .paper-figure > a { display: block; }
@@ -84,8 +86,7 @@ footer p + p { margin-top: 5px; }
   h1 { font-size: 32px; }
   h1 > span { font-size: 25px; }
   .authors { font-size: 21px; gap: 3px 19px; }
-  .demo-grid { gap: 10px; }
-  .demo-item h3 { font-size: 13px; }
+  .demo-grid { gap: 30px; }
 }
 @media (max-width: 700px) {
   body { font-size: 17px; }
@@ -101,6 +102,7 @@ footer p + p { margin-top: 5px; }
   .paper-links { font-size: 16px; gap: 8px 17px; margin-top: 19px; }
   .summary { font-size: 17px; line-height: 1.55; margin-top: 22px; }
   .gallery { margin-top: 26px; }
+  .motivation { font-size: 17px; margin-bottom: 21px; }
   .gallery-heading { align-items: flex-start; flex-wrap: wrap; gap: 10px; }
   .gallery-heading h2 { font-size: 23px; }
   .gallery-heading > button { font-size: 12px; }
