@@ -18,11 +18,13 @@ Static HTML, CSS, and JavaScript, deployed by GitHub Pages from the root of `mai
 
 - `index.html`: project content, publication metadata, and citation.
 - `styles.css`: responsive layout.
-- `script.js`: accessible demo tabs, animation control, and citation copy.
+- `script.js`: independent controls for all three visible animations, global play/pause, and citation copy.
 - `assets/`: original supplied GIF comparisons, static preview frames, and figures extracted from the paper.
 - `citation.bib`: downloadable BibTeX.
 
-Figures correspond to Figures 1–4 and Table 1 of arXiv:2610.09800v1. FVD percentages are reductions relative to each backbone's LoRA-only baseline in Table 1. The three GIF comparisons are the author-provided demonstrations, copied without modification. Static frames support reduced-motion preferences; only the selected demo animates.
+Figures correspond to Figures 1–4 and Table 1 of arXiv:2610.09800v1. FVD percentages are reductions relative to each backbone's LoRA-only baseline in Table 1. The three GIF comparisons are the author-provided demonstrations, copied without modification. All three are displayed together and play automatically. Static previews respect reduced-motion preferences. Each comparison can be paused independently or all at once.
+
+The visual layout is inspired by [Follow-Your-Click](https://follow-your-click.github.io/): centered paper information, blue text links, white panels, and an open comparison gallery. The page includes publication metadata, canonical URLs, a sitemap, and structured research metadata for discoverability; these do not guarantee search-engine indexing or rankings.
 
 ## Citation
 

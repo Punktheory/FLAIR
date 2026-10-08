@@ -1,63 +1,50 @@
 'use strict';
 
 const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
-const tabs = [...document.querySelectorAll('[role="tab"]')];
-const panels = [...document.querySelectorAll('[role="tabpanel"]')];
+const demos = [...document.querySelectorAll('.demo-image')];
 const motionToggle = document.querySelector('#motion-toggle');
-let activeModel = 'wan';
-let paused = motionPreference.matches;
-let userSelectedMotion = false;
+const demoState = new Map(demos.map(button => [button, motionPreference.matches]));
+let motionChangedByUser = false;
 
-function renderDemo() {
-  tabs.forEach(tab => {
-    const selected = tab.dataset.model === activeModel;
-    tab.setAttribute('aria-selected', String(selected));
-    tab.tabIndex = selected ? 0 : -1;
-  });
-  panels.forEach(panel => {
-    const active = panel.id === `panel-${activeModel}`;
-    panel.hidden = !active;
-    const img = panel.querySelector('img');
-    const source = active && !paused ? img.dataset.animation : img.dataset.poster;
+function renderDemos() {
+  demos.forEach(button => {
+    const paused = demoState.get(button);
+    const img = button.querySelector('img');
+    const source = paused ? img.dataset.poster : img.dataset.animation;
     if (img.getAttribute('src') !== source) img.src = source;
+    const title = button.closest('figure').querySelector('h3').textContent;
+    button.setAttribute('aria-label', `${paused ? 'Play' : 'Pause'} ${title} comparison`);
+    button.setAttribute('aria-pressed', String(paused));
   });
-  motionToggle.setAttribute('aria-pressed', String(paused));
-  motionToggle.setAttribute('aria-label', paused ? 'Play animated comparison' : 'Pause animated comparison');
-  motionToggle.querySelector('.motion-label').textContent = paused ? 'Play' : 'Pause';
-  motionToggle.querySelector('.pause-icon').textContent = paused ? '▶' : 'Ⅱ';
-  document.querySelector('#original-demo').href = `assets/${activeModel}.gif`;
+  const allPaused = [...demoState.values()].every(Boolean);
+  motionToggle.textContent = allPaused ? 'Play all' : 'Pause all';
+  motionToggle.setAttribute('aria-label', allPaused ? 'Play all animations' : 'Pause all animations');
+  motionToggle.setAttribute('aria-pressed', String(allPaused));
 }
 
-tabs.forEach((tab, index) => {
-  tab.addEventListener('click', () => {
-    activeModel = tab.dataset.model;
-    renderDemo();
-  });
-  tab.addEventListener('keydown', event => {
-    let next;
-    if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
-    if (event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
-    if (event.key === 'Home') next = 0;
-    if (event.key === 'End') next = tabs.length - 1;
-    if (next !== undefined) {
-      event.preventDefault();
-      tabs[next].focus();
-      tabs[next].click();
-    }
+demos.forEach(button => {
+  button.addEventListener('click', () => {
+    motionChangedByUser = true;
+    demoState.set(button, !demoState.get(button));
+    renderDemos();
   });
 });
+
 motionToggle.addEventListener('click', () => {
-  paused = !paused;
-  userSelectedMotion = true;
-  renderDemo();
+  motionChangedByUser = true;
+  const allPaused = [...demoState.values()].every(Boolean);
+  demos.forEach(button => demoState.set(button, !allPaused));
+  renderDemos();
 });
+
 motionPreference.addEventListener('change', event => {
-  if (!userSelectedMotion) {
-    paused = event.matches;
-    renderDemo();
+  if (!motionChangedByUser) {
+    demos.forEach(button => demoState.set(button, event.matches));
+    renderDemos();
   }
 });
-renderDemo();
+
+renderDemos();
 
 const copyButton = document.querySelector('#copy-citation');
 copyButton.addEventListener('click', async () => {
