@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c3336">
+  <title>FLAIR — Stable Surgical Video Generation</title>
+  <meta name="description" content="FLAIR learns surgical motion from optical flow to generate more stable, action-consistent surgical videos from text alone. Research from HKUST with demos, method, and results.">
+  <link rel="canonical" href="https://punktheory.github.io/FLAIR/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="FLAIR — Beyond Masks and Trajectories">
+  <meta property="og:description" content="Flow-guided latent actions for stable surgical video generation. Only a text prompt is needed at inference.">
+  <meta property="og:url" content="https://punktheory.github.io/FLAIR/">
+  <meta name="citation_title" content="Beyond Masks and Trajectories: Flow-Guided Latent Action Injection for Stable Surgical Video Generation">
+  <meta name="citation_author" content="Qin, Tsz-Yui">
+  <meta name="citation_author" content="Zhou, Siyu">
+  <meta name="citation_author" content="Tang, Chi-Keung">
+  <meta name="citation_author" content="Nie, Yuxiang">
+  <meta name="citation_author" content="Yang, Shu">
+  <meta name="citation_publication_date" content="2026/10/07">
+  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2610.09800">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header wrap">
+    <a class="wordmark" href="#" aria-label="FLAIR home"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M4 8c8-10 12 10 20 0M4 14c8-10 12 10 20 0M4 20c8-10 12 10 20 0"/></svg>FLAIR<span class="wordmark-dot">.</span></a>
+    <nav aria-label="Main navigation"><a href="#demos">Demos</a><a href="#method">Method</a><a href="#results">Results</a><a href="https://arxiv.org/abs/2610.09800" class="nav-paper">Paper <span aria-hidden="true">↗</span></a></nav>
+  </header>
+
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="paper-title">
+      <p class="eyebrow"><span class="small-dot" aria-hidden="true"></span> HKUST <span class="eyebrow-divider">/</span> ARXIV 2026</p>
+      <h1 id="paper-title">Beyond Masks and Trajectories<span>Flow-Guided Latent Action Injection<br class="desktop-break"> for Stable Surgical Video Generation</span></h1>
+      <p class="hero-summary">Surgical video generation needs better motion, without extra masks or trajectories.<br class="desktop-break"> <strong>FLAIR learns motion from optical flow and generates from text alone.</strong></p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="https://arxiv.org/pdf/2610.09800"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2h7l4 4v12H5zM12 2v5h4M8 11h5M8 14h5"/></svg>Read the paper <span aria-hidden="true">↗</span></a>
+        <span class="code-status"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m6 6-4 4 4 4m8-8 4 4-4 4m-3-11-2 14"/></svg>Code — released soon</span>
+      </div>
+    </section>
+
+    <section id="demos" class="demos wrap" aria-labelledby="demo-heading">
+      <div class="section-kicker"><h2 id="demo-heading">See the motion.</h2><span>Same backbone. Added action priors.</span></div>
+      <div class="demo-viewer">
+        <div class="demo-toolbar">
+          <div class="demo-tabs" role="tablist" aria-label="Choose a video backbone">
+            <button type="button" id="tab-wan" role="tab" aria-selected="true" aria-controls="panel-wan" data-model="wan">Wan 2.1</button>
+            <button type="button" id="tab-hunyuan" role="tab" aria-selected="false" aria-controls="panel-hunyuan" tabindex="-1" data-model="hunyuan">HunyuanVideo 1.5</button>
+            <button type="button" id="tab-cogvideox" role="tab" aria-selected="false" aria-controls="panel-cogvideox" tabindex="-1" data-model="cogvideox">CogVideoX-2B</button>
+          </div>
+          <button type="button" id="motion-toggle" class="motion-toggle" aria-pressed="false"><span class="pause-icon" aria-hidden="true">Ⅱ</span><span class="motion-label">Pause</span></button>
+        </div>
+        <div id="panel-wan" class="demo-panel" role="tabpanel" aria-labelledby="tab-wan" tabindex="0">
+          <img src="assets/wan-poster.webp" data-animation="assets/wan.gif" data-poster="assets/wan-poster.webp" width="644" height="217" alt="Wan 2.1 surgical video comparison: LoRA-only on the left and LoRA-FLAIR on the right.">
+        </div>
+        <div id="panel-hunyuan" class="demo-panel" role="tabpanel" aria-labelledby="tab-hunyuan" tabindex="0" hidden>
+          <img src="assets/hunyuan-poster.webp" data-animation="assets/hunyuan.gif" data-poster="assets/hunyuan-poster.webp" width="644" height="210" alt="HunyuanVideo 1.5 surgical video comparison: LoRA-only on the left and LoRA-FLAIR on the right.">
+        </div>
+        <div id="panel-cogvideox" class="demo-panel" role="tabpanel" aria-labelledby="tab-cogvideox" tabindex="0" hidden>
+          <img src="assets/cogvideox-poster.webp" data-animation="assets/cogvideox.gif" data-poster="assets/cogvideox-poster.webp" width="644" height="217" alt="CogVideoX-2B surgical video comparison: LoRA-only on the left and LoRA-FLAIR on the right.">
+        </div>
+        <div class="demo-footer"><p><span class="legend-dot baseline" aria-hidden="true"></span>LoRA-only <span class="comparison-arrow" aria-hidden="true">→</span><span class="legend-dot flair" aria-hidden="true"></span>LoRA + FLAIR</p><a id="original-demo" href="assets/wan.gif" target="_blank" rel="noopener">Open original <span aria-hidden="true">↗</span></a></div>
+      </div>
+      <p class="demo-caption">Generated surgical videos. Select a backbone to compare instrument motion and tissue consistency.</p>
+      <noscript><p>Open the animated comparisons: <a href="assets/wan.gif">Wan 2.1</a> · <a href="assets/hunyuan.gif">HunyuanVideo 1.5</a> · <a href="assets/cogvideox.gif">CogVideoX-2B</a>.</p></noscript>
+      <div class="paper-authors">
+        <p class="authors"><a href="https://punktheory.github.io/PersonalWebPage/">Tsz-Yui Qin<sup>*</sup></a><span>Siyu Zhou<sup>*</sup></span><a href="https://www.cse.ust.hk/~cktang/">Chi-Keung Tang</a><span>Yuxiang Nie<sup>†</sup></span><span>Shu Yang<sup>†</sup></span></p>
+        <p class="affiliation">The Hong Kong University of Science and Technology</p>
+        <p class="author-notes"><span><sup>*</sup> Equal contribution</span><span><sup>†</sup> Corresponding authors</span></p>
+      </div>
+      <div class="takeaways"><div><span>01</span><p><strong>Text in. Surgical video out.</strong>No masks, trajectories, or reference videos at inference.</p></div><div><span>02</span><p><strong>Motion learned from real video.</strong>Optical flow provides action supervision during training.</p></div><div><span>03</span><p><strong>One idea, three backbones.</strong>Action adapters work with domain-adapted video generators.</p></div></div>
+    </section>
+
+    <section id="method" class="section wrap" aria-labelledby="method-heading">
+      <div class="section-heading"><div><p class="eyebrow">01 / THE METHOD</p><h2 id="method-heading">Give text a sense of motion.</h2></div><p>Learn an action prior, predict it from a prompt, and inject it into the video generator.</p></div>
+      <figure class="paper-figure architecture"><a href="assets/architecture.webp" target="_blank" rel="noopener" aria-label="Open the FLAIR architecture figure at full resolution"><img src="assets/architecture.webp" width="1744" height="848" loading="lazy" alt="FLAIR architecture. A Flow Action Encoder learns latent actions from optical flow. A text-to-action predictor estimates actions from a surgical prompt. An action adapter injects global conditioning and temporal bias into a diffusion transformer."></a><figcaption><span><strong>FLAIR architecture.</strong> Optical flow is used during training; inference needs only text.</span><a href="assets/architecture.webp" target="_blank" rel="noopener">Enlarge <span aria-hidden="true">↗</span></a></figcaption></figure>
+      <div class="method-steps"><p><span>1</span><strong>Learn</strong>Compress optical flow into latent action sequences.</p><p><span>2</span><strong>Predict</strong>Map the text prompt to a motion-aware action prior.</p><p><span>3</span><strong>Inject</strong>Guide generation with global and temporal action signals.</p></div>
+    </section>
+
+    <section id="results" class="results-section" aria-labelledby="results-heading"><div class="wrap section">
+      <div class="section-heading"><div><p class="eyebrow">02 / THE RESULTS</p><h2 id="results-heading">More stable, across backbones.</h2></div><p>Lower FVD with LoRA-FLAIR on all three backbones, evaluated on 200 surgical prompts.</p></div>
+      <div class="result-cards">
+        <article class="result-card"><p class="model-name">Wan 2.1</p><p class="result-number">14.3<span>%</span><span class="down-arrow" aria-hidden="true">↘</span></p><p class="result-label">lower FVD</p><div class="bar-row"><span>LoRA</span><div class="bar-track"><div class="bar bar-baseline" style="--bar:100%"></div></div><span>1,340</span></div><div class="bar-row"><span>+ FLAIR</span><div class="bar-track"><div class="bar bar-flair" style="--bar:85.67%"></div></div><strong>1,148</strong></div></article>
+        <article class="result-card"><p class="model-name">HunyuanVideo 1.5</p><p class="result-number">46.0<span>%</span><span class="down-arrow" aria-hidden="true">↘</span></p><p class="result-label">lower FVD</p><div class="bar-row"><span>LoRA</span><div class="bar-track"><div class="bar bar-baseline" style="--bar:100%"></div></div><span>2,533</span></div><div class="bar-row"><span>+ FLAIR</span><div class="bar-track"><div class="bar bar-flair" style="--bar:53.97%"></div></div><strong>1,367</strong></div></article>
+        <article class="result-card"><p class="model-name">CogVideoX-2B</p><p class="result-number">10.2<span>%</span><span class="down-arrow" aria-hidden="true">↘</span></p><p class="result-label">lower FVD</p><div class="bar-row"><span>LoRA</span><div class="bar-track"><div class="bar bar-baseline" style="--bar:100%"></div></div><span>1,772</span></div><div class="bar-row"><span>+ FLAIR</span><div class="bar-track"><div class="bar bar-flair" style="--bar:89.84%"></div></div><strong>1,592</strong></div></article>
+      </div>
+      <p class="results-note">Relative FVD reduction vs. LoRA-only, calculated from Table 1. Lower is better; each pair is scaled to its own baseline.</p>
+      <figure class="paper-figure results-table"><div class="figure-scroll" tabindex="0" role="region" aria-label="Full results table; scroll horizontally on small screens"><a href="assets/results-table.webp" target="_blank" rel="noopener" aria-label="Open Table 1 at full resolution"><img src="assets/results-table.webp" width="1896" height="632" loading="lazy" alt="Table 1: full comparison of video quality and SurgMetrics for Wan 2.1, HunyuanVideo 1.5, and CogVideoX-2B, including base models, LoRA, and LoRA-FLAIR. The full numerical table is also available in the linked paper."></a></div><figcaption><span><strong>The full picture.</strong> General video metrics and SurgMetrics, reproduced from Table 1.</span><a href="https://arxiv.org/pdf/2610.09800#page=8">Table in paper <span aria-hidden="true">↗</span></a></figcaption></figure>
+      <div class="temporal-heading"><h3>Consistency, frame by frame.</h3><p>Highlighted regions track instrument and tissue appearance over time.</p></div>
+      <figure class="paper-figure temporal"><div class="figure-scroll" tabindex="0" role="region" aria-label="Temporal comparison; scroll horizontally on small screens"><a href="assets/temporal-comparison.webp" target="_blank" rel="noopener" aria-label="Open the temporal comparison at full resolution"><img src="assets/temporal-comparison.webp" width="1880" height="332" loading="lazy" alt="Seven matched frames from Wan 2.1: LoRA in the top row and LoRA-FLAIR in the bottom row. Yellow boxes mark regions of interest for instrument shape and consistency."></a></div><figcaption><span><strong>Wan 2.1 qualitative comparison.</strong> LoRA-only above, LoRA-FLAIR below.</span><a href="assets/temporal-comparison.webp" target="_blank" rel="noopener">Enlarge <span aria-hidden="true">↗</span></a></figcaption></figure>
+    </div></section>
+
+    <section class="section wrap evidence-section" aria-labelledby="evidence-heading">
+      <div class="section-heading"><div><p class="eyebrow">03 / DATA & EVALUATION</p><h2 id="evidence-heading">Built around surgical actions.</h2></div><p>Action-aware training data and a surgical evaluation suite support the generation framework.</p></div>
+      <article class="evidence-block"><div class="evidence-intro"><p class="mini-label">THE DATASET</p><h3>SurgActionClip-30K</h3><p>Action-centric clips paired with structured surgical captions.</p><div class="inline-stats"><p><strong>32,293</strong>retained clips</p><p><strong>11</strong>source datasets</p><p><strong>4</strong>surgical domains</p></div></div><figure class="paper-figure"><a href="assets/dataset.webp" target="_blank" rel="noopener" aria-label="Open the dataset construction figure at full resolution"><img src="assets/dataset.webp" width="1792" height="620" loading="lazy" alt="SurgActionClip-30K pipeline: source laparoscopic, ophthalmic, robotic, and endoscopic video; extract action-centric clips; generate structured captions with a medical vision-language model; apply quality control."></a><figcaption><span>From diverse videos to action-aware supervision.</span><a href="assets/dataset.webp" target="_blank" rel="noopener">Enlarge <span aria-hidden="true">↗</span></a></figcaption></figure></article>
+      <article class="evidence-block"><div class="evidence-intro"><p class="mini-label">THE EVALUATION</p><h3>SurgMetrics</h3><p>Six artifact axes assess semantics, appearance, motion, instruments, tissue, and tracking, alongside a separate domain score.</p><div class="metric-highlight"><strong>0.746–0.867</strong><span>Spearman correlation with surgeon ratings across the six artifact axes.</span></div><p class="study-note">4 surgeons · 90 generated laparoscopic videos</p></div><figure class="paper-figure"><a href="assets/surgmetrics.webp" target="_blank" rel="noopener" aria-label="Open the SurgMetrics overview at full resolution"><img src="assets/surgmetrics.webp" width="1888" height="652" loading="lazy" alt="SurgMetrics extracts surgical video features and dense optical flow, then measures semantic, appearance, drift, instrument, tissue, and tracking artifacts. A separate domain branch assesses surgical realism."></a><figcaption><span>Surgical features and optical flow provide complementary signals.</span><a href="assets/surgmetrics.webp" target="_blank" rel="noopener">Enlarge <span aria-hidden="true">↗</span></a></figcaption></figure></article>
+    </section>
+
+    <section class="citation-section wrap" aria-labelledby="citation-heading"><div class="citation-heading"><div><p class="eyebrow">REFERENCE</p><h2 id="citation-heading">Citation</h2></div><div class="citation-actions"><a href="citation.bib" download>Download .bib <span aria-hidden="true">↓</span></a><button type="button" id="copy-citation">Copy BibTeX</button></div></div><pre><code id="bibtex">@misc{qin2026flair,
+  title={Beyond Masks and Trajectories: Flow-Guided Latent Action
+         Injection for Stable Surgical Video Generation},
+  author={Tsz-Yui Qin and Siyu Zhou and Chi-Keung Tang
+          and Yuxiang Nie and Shu Yang},
+  year={2026},
+  eprint={2610.09800},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV},
+  url={https://arxiv.org/abs/2610.09800}
+}</code></pre><span id="copy-status" class="sr-only" role="status"></span></section>
+  </main>
+  <footer class="site-footer wrap"><a class="wordmark" href="#">FLAIR<span class="wordmark-dot">.</span></a><p>Flow-Guided Latent Action Injection</p><a href="https://arxiv.org/abs/2610.09800">arXiv:2610.09800 <span aria-hidden="true">↗</span></a></footer>
+</body>
+</html>
